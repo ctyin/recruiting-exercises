@@ -11,6 +11,16 @@ type WarehouseOutput = {
   [warehouseName: string]: Order;
 };
 
+function insufficientInventory(orderedValues: number[]) {
+  for (let i = 0; i < orderedValues.length; i++) {
+    if (orderedValues[i] > 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export function allocateInventory(
   orderedItems: Order,
   warehouses: WarehouseInput[]
@@ -19,7 +29,6 @@ export function allocateInventory(
 
   warehouses.forEach((w) => {
     const tempOutput: WarehouseOutput = {};
-
     Object.entries(w.inventory).forEach(
       ([itemInWarehouse, amountInWarehouse]) => {
         // Look at each item in the warehouse and adds to output if the order needs it
@@ -48,11 +57,9 @@ export function allocateInventory(
     warehouseOutputs.push(tempOutput);
   });
 
-  // Checks for remaining (non-zero) items in the order
-  for (let i = 0; i < Object.values(orderedItems).length; i++) {
-    if (Object.values(orderedItems)[i] > 0) {
-      return [];
-    }
+  // If non-zero items remain in the order, then insufficient inventory to meet the order
+  if (insufficientInventory(Object.values(orderedItems))) {
+    return [];
   }
 
   return warehouseOutputs;
