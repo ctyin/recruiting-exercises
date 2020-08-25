@@ -1,4 +1,12 @@
+### Running my solution
+Dependencies: Typescript, npx, node
 
+To compile:
+`npx tsc solution.ts`
+
+To run:
+`node solution.js <input line>`
+    Example: `node solution.js { apple: 1 }, [{ name: owd, inventory: { apple: 1 } }]
 
 ### Problem
 
