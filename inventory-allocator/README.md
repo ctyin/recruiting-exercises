@@ -3,12 +3,13 @@
 Dependencies: Typescript, npx, node
 
 To compile:
-`npx tsc solution.ts`
+`npx tsc src/InventoryAllocator.ts`
 
-To run:
-`node solution.js <input line>`
+To run an example:
 
-Example: `node solution.js { apple: 1 }, [{ name: owd, inventory: { apple: 1 } }]`
+- Add the example you want to run at the bottom of `src/InventoryAllocator.ts`
+- Compile
+- Run `node src/InventoryAllocator.js`
 
 ### Problem
 

@@ -1,11 +1,13 @@
 "use strict";
+exports.__esModule = true;
+exports.allocateInventory = void 0;
 function allocateInventory(orderedItems, warehouses) {
     var warehouseOutputs = [];
     warehouses.forEach(function (w) {
         var tempOutput = {};
         Object.entries(w.inventory).forEach(function (_a) {
             // Look at each item in the warehouse and checks if the order needs it
-            // Going in sorted order so greedy approach tells us to maximize items we take at each warehouse
+            // Going in sorted order so greedy approach tells us to take as many items at the current warehouse
             var itemInWarehouse = _a[0], amountInWarehouse = _a[1];
             if (amountInWarehouse > 0 &&
                 Object.keys(orderedItems).indexOf(itemInWarehouse) !== -1) {
@@ -32,7 +34,11 @@ function allocateInventory(orderedItems, warehouses) {
     }
     return warehouseOutputs;
 }
+exports.allocateInventory = allocateInventory;
 // { apple: 1 }, [{ name: owd, inventory: { apple: 0 } }]
-var testOrder = { apple: 1 };
-var testWarehouses = [{ name: "owd", inventory: { apple: 0 } }];
+var testOrder = { apple: 10 };
+var testWarehouses = [
+    { name: "owd", inventory: { apple: 5 } },
+    { name: "dm", inventory: { apple: 5 } },
+];
 console.log(allocateInventory(testOrder, testWarehouses));

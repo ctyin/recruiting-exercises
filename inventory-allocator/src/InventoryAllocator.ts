@@ -11,15 +11,19 @@ type WarehouseOutput = {
   [warehouseName: string]: Order;
 };
 
-function allocateInventory(orderedItems: Order, warehouses: WarehouseInput[]) {
+export function allocateInventory(
+  orderedItems: Order,
+  warehouses: WarehouseInput[]
+) {
   const warehouseOutputs: WarehouseOutput[] = [];
 
   warehouses.forEach((w) => {
     const tempOutput: WarehouseOutput = {};
+
     Object.entries(w.inventory).forEach(
       ([itemInWarehouse, amountInWarehouse]) => {
-        // Look at each item in the warehouse and checks if the order needs it
-        // Going in sorted order so greedy approach tells us to maximize items we take at each warehouse
+        // Look at each item in the warehouse and adds to output if the order needs it
+        // Going in sorted order so greedy approach tells us to take as many items at the current warehouse
 
         if (
           amountInWarehouse > 0 &&
@@ -27,6 +31,7 @@ function allocateInventory(orderedItems: Order, warehouses: WarehouseInput[]) {
         ) {
           const tempOrder: Order = {};
           const amountNeeded = orderedItems[itemInWarehouse];
+
           if (amountInWarehouse > amountNeeded) {
             tempOrder[itemInWarehouse] = amountNeeded;
             orderedItems[itemInWarehouse] = 0;
@@ -52,8 +57,15 @@ function allocateInventory(orderedItems: Order, warehouses: WarehouseInput[]) {
 
   return warehouseOutputs;
 }
-// { apple: 1 }, [{ name: owd, inventory: { apple: 0 } }]
-const testOrder = { apple: 1 };
-const testWarehouses = [{ name: "owd", inventory: { apple: 0 } }];
+
+/* Change the test cases here so they will run
+ * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck. That's the only difference
+ * from the example input and the test input
+ */
+const testOrder = { apple: 10 };
+const testWarehouses = [
+  { name: "owd", inventory: { apple: 5 } },
+  { name: "dm", inventory: { apple: 5 } },
+];
 
 console.log(allocateInventory(testOrder, testWarehouses));
