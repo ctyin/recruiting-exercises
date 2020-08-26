@@ -29,18 +29,18 @@ export function allocateInventory(
 
   warehouses.forEach((w) => {
     const tempOutput: WarehouseOutput = {};
+    const tempOrder: Order = {};
     Object.entries(w.inventory).forEach(
       ([itemInWarehouse, amountInWarehouse]) => {
         // Look at each item in the warehouse and adds to output if the order needs it
         // Going in sorted order so greedy approach tells us to take as many items at the current warehouse
+        const amountNeeded = orderedItems[itemInWarehouse];
 
         if (
           amountInWarehouse > 0 &&
+          amountNeeded > 0 &&
           Object.keys(orderedItems).indexOf(itemInWarehouse) !== -1
         ) {
-          const tempOrder: Order = {};
-          const amountNeeded = orderedItems[itemInWarehouse];
-
           if (amountInWarehouse > amountNeeded) {
             tempOrder[itemInWarehouse] = amountNeeded;
             orderedItems[itemInWarehouse] = 0;
@@ -69,10 +69,10 @@ export function allocateInventory(
  * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck.
  * That's the only difference from the example input and the test input
  */
-// const testOrder = { apple: 10 };
-// const testWarehouses = [
-//   { name: "owd", inventory: { apple: 5 } },
-//   { name: "dm", inventory: { apple: 5 } },
+// const testOrder = { apple: 5, banana: 5, orange: 5 };
+// const testWarehouses: WarehouseInput[] = [
+//   { name: "owd", inventory: { apple: 5, orange: 10 } },
+//   { name: "dm", inventory: { banana: 5, orange: 10 } },
 // ];
 
 // console.log(allocateInventory(testOrder, testWarehouses));
