@@ -14,6 +14,7 @@
   },
   "scripts": {
     "test": "",
+    "compile": "npx tsc --lib ES2017,DOM src/InventoryAllocator.ts",
     "lint": "eslint --max-warnings 0 --ext .ts,.js ."
   },
   "author": "",

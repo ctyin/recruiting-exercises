@@ -3,7 +3,7 @@
 Dependencies: Typescript, npx, node
 
 To compile:
-`npx tsc src/InventoryAllocator.ts`
+`npm run compile`
 
 To run an example:
 

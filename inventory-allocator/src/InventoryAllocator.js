@@ -1,12 +1,20 @@
 "use strict";
 exports.__esModule = true;
 exports.allocateInventory = void 0;
+function insufficientInventory(orderedValues) {
+    for (var i = 0; i < orderedValues.length; i++) {
+        if (orderedValues[i] > 0) {
+            return true;
+        }
+    }
+    return false;
+}
 function allocateInventory(orderedItems, warehouses) {
     var warehouseOutputs = [];
     warehouses.forEach(function (w) {
         var tempOutput = {};
         Object.entries(w.inventory).forEach(function (_a) {
-            // Look at each item in the warehouse and checks if the order needs it
+            // Look at each item in the warehouse and adds to output if the order needs it
             // Going in sorted order so greedy approach tells us to take as many items at the current warehouse
             var itemInWarehouse = _a[0], amountInWarehouse = _a[1];
             if (amountInWarehouse > 0 &&
@@ -26,16 +34,17 @@ function allocateInventory(orderedItems, warehouses) {
         });
         warehouseOutputs.push(tempOutput);
     });
-    // Checks for remaining (non-zero) items in the order
-    for (var i = 0; i < Object.values(orderedItems).length; i++) {
-        if (Object.values(orderedItems)[i] > 0) {
-            return [];
-        }
+    // If non-zero items remain in the order, then insufficient inventory to meet the order
+    if (insufficientInventory(Object.values(orderedItems))) {
+        return [];
     }
     return warehouseOutputs;
 }
 exports.allocateInventory = allocateInventory;
-// { apple: 1 }, [{ name: owd, inventory: { apple: 0 } }]
+/* Change the test cases here so they will run
+ * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck. That's the only difference
+ * from the example input and the test input
+ */
 var testOrder = { apple: 10 };
 var testWarehouses = [
     { name: "owd", inventory: { apple: 5 } },
