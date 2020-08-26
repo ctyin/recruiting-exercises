@@ -2,14 +2,19 @@
 
 Dependencies: Typescript, npx, node
 
-To compile:
+#### To compile:
+
 `npm run compile`
 
-To run an example:
+#### To run an example:
 
 - Change and uncomment the example at the bottom of `src/InventoryAllocator.ts`
 - Compile
 - Run `node src/InventoryAllocator.js`
+
+#### Run test coverage
+
+`npm run coverage`
 
 ### Problem
 
