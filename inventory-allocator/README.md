@@ -16,6 +16,10 @@ Dependencies: Typescript, npx, node
 
 `npm run coverage`
 
+#### Known issues with test cases
+
+- If warehouse names are duplicates, program does not merge them
+
 ### Problem
 
 The problem is compute the best way an order can be shipped (called shipments) given inventory across a set of warehouses (called inventory distribution).

@@ -69,7 +69,46 @@ describe("provided test cases", function () {
   });
 });
 
-describe("custom cases", function () {
+describe("custom empty / singleton cases", function () {
+  it("empty warehouse empty order", function () {
+    let result = allocateInventory({}, []);
+    expect(result).to.deep.equal([]);
+  });
+
+  it("empty order nonempty warehouse", function () {
+    let result = allocateInventory({}, [
+      { name: "warehouse1", inventory: { apple: 2, orange: 3 } },
+    ]);
+
+    expect(result).to.deep.equal([]);
+  });
+
+  it("empty warehouse array insufficient", function () {
+    let result = allocateInventory({ apple: 1 }, []);
+    expect(result).to.deep.equal([]);
+  });
+});
+
+describe("custom more complex cases", function () {
+  it("empty string for warehouse name", function () {
+    let result = allocateInventory({ apple: 4 }, [
+      { name: "", inventory: { apple: 2 } },
+      { name: "ord", inventory: { apple: 2 } },
+    ]);
+    expect(result).to.deep.equal([{ "": { apple: 2 } }, { ord: { apple: 2 } }]);
+  });
+
+  it("split with duplicate warehouse names", function () {
+    let result = allocateInventory({ apple: 4 }, [
+      { name: "ord", inventory: { apple: 2 } },
+      { name: "ord", inventory: { apple: 2 } },
+    ]);
+    expect(result).to.deep.equal([
+      { ord: { apple: 2 } },
+      { ord: { apple: 2 } },
+    ]);
+  });
+
   it("longer exact match", function () {
     let result = allocateInventory({ apple: 1, orange: 10 }, [
       { name: "warehouse1", inventory: { orange: 10 } },
@@ -83,14 +122,35 @@ describe("custom cases", function () {
     expect(result).to.deep.equal(expected);
   });
 
-  it("empty warehouse empty order", function () {
-    let result = allocateInventory({}, []);
-    expect(result).to.deep.equal([]);
+  it("split unevenly between >2 warehouses", function () {
+    let result = allocateInventory({ apple: 15 }, [
+      { name: "warehouse1", inventory: { apple: 2, orange: 3 } },
+      { name: "warehouse2", inventory: { apple: 5 } },
+      { name: "warehouse3", inventory: { apple: 15 } },
+    ]);
+    let expected = [
+      { warehouse1: { apple: 2 } },
+      { warehouse2: { apple: 5 } },
+      { warehouse3: { apple: 8 } },
+    ];
+
+    expect(result).to.deep.equal(expected);
   });
 
-  it("empty warehouse array insufficient", function () {
-    let result = allocateInventory({ apple: 1 }, []);
-    expect(result).to.deep.equal([]);
+  it("maintains state after seeing irrelevant warehouses", function () {
+    let result = allocateInventory({ apple: 10, grapes: 14 }, [
+      { name: "warehouse1", inventory: { orange: 9, grapes: 14 } },
+      { name: "warehouse1", inventory: { orange: 9 } },
+      { name: "warehouse1", inventory: { orange: 9 } },
+      { name: "warehouse1", inventory: { orange: 9 } },
+      { name: "warehouse1", inventory: { apple: 10 } },
+    ]);
+    let expected = [
+      { warehouse1: { grapes: 14 } },
+      { warehouse1: { apple: 10 } },
+    ];
+
+    expect(result).to.deep.equal(expected);
   });
 });
 

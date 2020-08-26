@@ -14,7 +14,7 @@ function allocateInventory(orderedItems, warehouses) {
     var warehouseOutputs = [];
     warehouses.forEach(function (w) {
         var tempOutput = {};
-        var tempOrder = {};
+        var itemsTaken = {};
         Object.entries(w.inventory).forEach(function (_a) {
             var itemInWarehouse = _a[0], amountInWarehouse = _a[1];
             // Look at each item in the warehouse and adds to output if the order needs it
@@ -24,17 +24,20 @@ function allocateInventory(orderedItems, warehouses) {
                 amountNeeded > 0 &&
                 Object.keys(orderedItems).indexOf(itemInWarehouse) !== -1) {
                 if (amountInWarehouse > amountNeeded) {
-                    tempOrder[itemInWarehouse] = amountNeeded;
+                    itemsTaken[itemInWarehouse] = amountNeeded;
                     orderedItems[itemInWarehouse] = 0;
                 }
                 else {
-                    tempOrder[itemInWarehouse] = amountInWarehouse;
+                    itemsTaken[itemInWarehouse] = amountInWarehouse;
                     orderedItems[itemInWarehouse] -= amountInWarehouse;
                 }
-                tempOutput[w.name] = tempOrder;
             }
         });
-        warehouseOutputs.push(tempOutput);
+        tempOutput[w.name] = itemsTaken;
+        if (Object.keys(itemsTaken).length > 0) {
+            // ignore warehouses that we don't need anything from
+            warehouseOutputs.push(tempOutput);
+        }
     });
     // If non-zero items remain in the order, then insufficient inventory to meet the order
     if (insufficientInventory(Object.values(orderedItems))) {
@@ -47,9 +50,9 @@ exports.allocateInventory = allocateInventory;
  * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck.
  * That's the only difference from the example input and the test input
  */
-var testOrder = { apple: 5, banana: 5, orange: 5 };
-var testWarehouses = [
-    { name: "owd", inventory: { apple: 5, orange: 10 } },
-    { name: "dm", inventory: { banana: 5, orange: 10 } },
-];
-console.log(allocateInventory(testOrder, testWarehouses));
+// const testOrder = { apple: 5, banana: 5, orange: 5 };
+// const testWarehouses: WarehouseInput[] = [
+//   { name: "owd", inventory: { apple: 5, orange: 10 } },
+//   { name: "dm", inventory: { banana: 5, orange: 10 } },
+// ];
+// console.log(allocateInventory(testOrder, testWarehouses));

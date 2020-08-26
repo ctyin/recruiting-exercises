@@ -29,7 +29,8 @@ export function allocateInventory(
 
   warehouses.forEach((w) => {
     const tempOutput: WarehouseOutput = {};
-    const tempOrder: Order = {};
+    const itemsTaken: Order = {};
+
     Object.entries(w.inventory).forEach(
       ([itemInWarehouse, amountInWarehouse]) => {
         // Look at each item in the warehouse and adds to output if the order needs it
@@ -42,19 +43,22 @@ export function allocateInventory(
           Object.keys(orderedItems).indexOf(itemInWarehouse) !== -1
         ) {
           if (amountInWarehouse > amountNeeded) {
-            tempOrder[itemInWarehouse] = amountNeeded;
+            itemsTaken[itemInWarehouse] = amountNeeded;
             orderedItems[itemInWarehouse] = 0;
           } else {
-            tempOrder[itemInWarehouse] = amountInWarehouse;
+            itemsTaken[itemInWarehouse] = amountInWarehouse;
             orderedItems[itemInWarehouse] -= amountInWarehouse;
           }
-
-          tempOutput[w.name] = tempOrder;
         }
       }
     );
 
-    warehouseOutputs.push(tempOutput);
+    tempOutput[w.name] = itemsTaken;
+
+    if (Object.keys(itemsTaken).length > 0) {
+      // ignore warehouses that we don't need anything from
+      warehouseOutputs.push(tempOutput);
+    }
   });
 
   // If non-zero items remain in the order, then insufficient inventory to meet the order
