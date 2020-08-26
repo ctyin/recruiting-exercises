@@ -12,6 +12,10 @@ Dependencies: Typescript, npx, node
 - Compile
 - Run `node src/InventoryAllocator.js`
 
+#### Running tests:
+
+`npm run test`
+
 #### Run test coverage
 
 `npm run coverage`
