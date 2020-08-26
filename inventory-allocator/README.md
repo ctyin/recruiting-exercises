@@ -7,7 +7,7 @@ To compile:
 
 To run an example:
 
-- Add the example you want to run at the bottom of `src/InventoryAllocator.ts`
+- Change and uncomment the example at the bottom of `src/InventoryAllocator.ts`
 - Compile
 - Run `node src/InventoryAllocator.js`
 

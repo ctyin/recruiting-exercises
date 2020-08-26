@@ -7,13 +7,20 @@
     "typescript": "^4.0.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^3.10.0",
     "@typescript-eslint/parser": "^3.10.0",
+    "chai": "^4.2.0",
     "eslint": "^7.7.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "mocha": "^8.1.2",
+    "nyc": "^15.1.0",
+    "ts-node": "^9.0.0"
   },
   "scripts": {
-    "test": "",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "compile": "npx tsc --lib ES2017,DOM src/InventoryAllocator.ts",
     "lint": "eslint --max-warnings 0 --ext .ts,.js ."
   },

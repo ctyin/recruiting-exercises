@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.allocateInventory = void 0;
+exports.allocateInventory = exports.insufficientInventory = void 0;
 function insufficientInventory(orderedValues) {
     for (var i = 0; i < orderedValues.length; i++) {
         if (orderedValues[i] > 0) {
@@ -9,6 +9,7 @@ function insufficientInventory(orderedValues) {
     }
     return false;
 }
+exports.insufficientInventory = insufficientInventory;
 function allocateInventory(orderedItems, warehouses) {
     var warehouseOutputs = [];
     warehouses.forEach(function (w) {
@@ -41,13 +42,13 @@ function allocateInventory(orderedItems, warehouses) {
     return warehouseOutputs;
 }
 exports.allocateInventory = allocateInventory;
-/* Change the test cases here so they will run
- * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck. That's the only difference
- * from the example input and the test input
+/* Change the objects here to use your own custom tests
+ * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck.
+ * That's the only difference from the example input and the test input
  */
-var testOrder = { apple: 10 };
-var testWarehouses = [
-    { name: "owd", inventory: { apple: 5 } },
-    { name: "dm", inventory: { apple: 5 } },
-];
-console.log(allocateInventory(testOrder, testWarehouses));
+// const testOrder = { apple: 10 };
+// const testWarehouses = [
+//   { name: "owd", inventory: { apple: 5 } },
+//   { name: "dm", inventory: { apple: 5 } },
+// ];
+// console.log(allocateInventory(testOrder, testWarehouses));

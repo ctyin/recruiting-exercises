@@ -11,7 +11,7 @@ type WarehouseOutput = {
   [warehouseName: string]: Order;
 };
 
-function insufficientInventory(orderedValues: number[]) {
+export function insufficientInventory(orderedValues: number[]) {
   for (let i = 0; i < orderedValues.length; i++) {
     if (orderedValues[i] > 0) {
       return true;
@@ -65,14 +65,14 @@ export function allocateInventory(
   return warehouseOutputs;
 }
 
-/* Change the test cases here so they will run
- * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck. That's the only difference
- * from the example input and the test input
+/* Change the objects here to use your own custom tests
+ * Note that the `name` field in the warehouse object needs to be in quotes in order to typecheck.
+ * That's the only difference from the example input and the test input
  */
-const testOrder = { apple: 10 };
-const testWarehouses = [
-  { name: "owd", inventory: { apple: 5 } },
-  { name: "dm", inventory: { apple: 5 } },
-];
+// const testOrder = { apple: 10 };
+// const testWarehouses = [
+//   { name: "owd", inventory: { apple: 5 } },
+//   { name: "dm", inventory: { apple: 5 } },
+// ];
 
-console.log(allocateInventory(testOrder, testWarehouses));
+// console.log(allocateInventory(testOrder, testWarehouses));
