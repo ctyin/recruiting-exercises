@@ -69,4 +69,29 @@ describe("provided test cases", function () {
   });
 });
 
+describe("custom cases", function () {
+  it("longer exact match", function () {
+    let result = allocateInventory({ apple: 1, orange: 10 }, [
+      { name: "warehouse1", inventory: { orange: 10 } },
+      { name: "warehouse2", inventory: { apple: 2 } },
+    ]);
+    let expected = [
+      { warehouse1: { orange: 10 } },
+      { warehouse2: { apple: 1 } },
+    ];
+
+    expect(result).to.deep.equal(expected);
+  });
+
+  it("empty warehouse empty order", function () {
+    let result = allocateInventory({}, []);
+    expect(result).to.deep.equal([]);
+  });
+
+  it("empty warehouse array insufficient", function () {
+    let result = allocateInventory({ apple: 1 }, []);
+    expect(result).to.deep.equal([]);
+  });
+});
+
 export {};
